@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panel_forecast/widgets/navigation_drawer.dart';
 class ForecastScreen extends StatefulWidget {
   const ForecastScreen({ Key? key }) : super(key: key);
 
@@ -8,13 +9,10 @@ class ForecastScreen extends StatefulWidget {
 
 class _ForecastScreenState extends State<ForecastScreen> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-       appBar: AppBar(
-          title: Text('Dobowa prognoza energii elektrycznej'),
-        ),
-        body: Column(children: [],),
-      
+  Widget build(BuildContext context)=>Scaffold(
+    appBar: AppBar(
+      title: const Text('Prognoza')
+    ),
+    drawer: const NavigationDrawer(),
     );
-  }
 }

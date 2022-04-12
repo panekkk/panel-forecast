@@ -11,12 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dobowa prognoza produkcji energii elektrycznej przez panel fotowoltaiczny',
+      title: 'Prognoza',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home: const ForecastScreen(),
+      home:  const ForecastScreen(),
+      
+      
     );
   }
 }
