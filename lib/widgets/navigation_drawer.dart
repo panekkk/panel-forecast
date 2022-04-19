@@ -33,14 +33,14 @@ class NavigationDrawer extends StatelessWidget {
                 builder: (context)=> const ForecastScreen()))
         ),
         ListTile(
-          leading: const Icon(Icons.home),
+          leading: const Icon(Icons.settings),
           title: const Text('Parametry'),
           onTap: () =>
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context)=> const ParametersScreen()))
         ),
         ListTile(
-          leading: const Icon(Icons.home),
+          leading: const Icon(Icons.source),
           title: const Text('Modele'),
           onTap: () =>
               Navigator.of(context).pushReplacement(MaterialPageRoute(
