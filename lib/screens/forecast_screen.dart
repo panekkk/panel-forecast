@@ -11,9 +11,9 @@ class ForecastScreen extends StatefulWidget {
 
 class _ForecastScreenState extends State<ForecastScreen> {
   final formKey = GlobalKey<FormState>();
-  double temperature = 0;
-  double insolation = 0;
-  String model = 'Two';
+  double _temperature = 0;
+  double _insolation = 0;
+  String _model = 'Two';
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text('Prognoza')),
@@ -59,7 +59,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
           }
         },
         onSaved: (value) =>
-            setState(() => temperature = double.parse(value.toString())),
+            setState(() => _temperature = double.parse(value.toString())),
       );
   Widget buildInsolation() => TextFormField(
         decoration: const InputDecoration(
@@ -78,22 +78,22 @@ class _ForecastScreenState extends State<ForecastScreen> {
           }
         },
         onSaved: (value) =>
-            setState(() => insolation = double.parse(value.toString())),
+            setState(() => _insolation = double.parse(value.toString())),
       );
   Widget buildDropdownModelList() => DropdownButton<String>(
-        value: model,
+        value: _model,
         icon: const Icon(Icons.arrow_downward),
         isExpanded: true,
         elevation: 16,
         hint: const Text('Wybierz model'),
-        style: const TextStyle(color: Colors.deepPurple),
+        style: const TextStyle(color: Colors.black),
         underline: Container(
           height: 2,
           color: Colors.blue,
         ),
         onChanged: (String? newValue) {
           setState(() {
-            model = newValue!;
+            _model = newValue!;
           });
         },
         items: <String>['One', 'Two', 'Free', 'Four']
@@ -110,6 +110,19 @@ class _ForecastScreenState extends State<ForecastScreen> {
         final isValid = formKey.currentState?.validate();
         if (isValid == true) {
           formKey.currentState?.save();
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: const Text('Sukces'),
+                    content:
+                        Text('Obliczona moc: ' '${_temperature + _insolation}'),
+                    actions: [
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ));
         }
       },
       child: const Text('Oblicz'));
