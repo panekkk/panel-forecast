@@ -109,7 +109,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
       onPressed: () {
         final isValid = formKey.currentState?.validate();
         if (isValid == true) {
-          formKey.currentState?.save();
+          formKey.currentState?.save(); //if valid save state of inputs
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
