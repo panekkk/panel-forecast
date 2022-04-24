@@ -13,13 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Prognoza',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
-      home:  const ForecastScreen(),
-      
-      
+      home: const ForecastScreen(),
     );
   }
 }
-
