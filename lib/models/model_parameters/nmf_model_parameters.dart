@@ -1,5 +1,6 @@
+import 'package:provider/provider.dart';
 class NMFModelParameters {
-  double n1;
+  double _n1;
   double n2;
   double n3;
   double n4;
@@ -9,7 +10,7 @@ class NMFModelParameters {
   double n8;
   double n9;
   NMFModelParameters(
-    this.n1,
+    this._n1,
     this.n2,
     this.n3,
     this.n4,
