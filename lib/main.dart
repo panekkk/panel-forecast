@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:panel_forecast/screens/forecast_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:panel_forecast/models/model_parameters/model_parameters.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (nmfModel) => ListModelParameters())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

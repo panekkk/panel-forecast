@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
-import 'package:panel_forecast/models/model_parameters/nmf_model_parameters.dart';
+import 'package:panel_forecast/models/model_parameters/model_parameters.dart';
+import 'package:provider/provider.dart';
 
 class ModelsScreen extends StatefulWidget {
   const ModelsScreen({Key? key}) : super(key: key);
@@ -11,11 +12,11 @@ class ModelsScreen extends StatefulWidget {
 }
 
 class _ModelsScreenState extends State<ModelsScreen> {
-  NMFModelParameters nmfModel = NMFModelParameters(1, 1, 1, 1, 1, 1, 1, 1, 1);
   final formKey = GlobalKey<FormState>();
-  List modelList = ['MODEL1', 'MODEL2', 'MODEL2'];
-  List lista = [1, 2, 34, 5];
-  String _model = 'MODEL_P_MAX_EQU_1_21';
+  static final regexParameter =
+      RegExp(r'^[-]?[0-9]*[.]{0,1}[0-9]*([e][-+][0-9]*)?$');
+  String _model = 'MODEL_FUZZY_NMF_EQU_2_24';
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text('Modele')),
@@ -26,26 +27,35 @@ class _ModelsScreenState extends State<ModelsScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                for (var item in lista)
+                for (MapEntry e in context
+                    .read<ListModelParameters>()
+                    .getModelParametersEntries(_model))
                   Column(
-                    children: [buildTemperature(item), const SizedBox(height: 10,)],
+                    children: [
+                      buildParameterForm(e),
+                      const SizedBox(
+                        height: 10,
+                      )
+                    ],
                   ),
-                  buildDropdownModelList()
+                buildDropdownModelList()
               ],
             ),
           ),
         ),
       );
 
-  Widget buildTemperature(int initValue) => TextFormField(
-        initialValue: initValue.toString(),
-        decoration: const InputDecoration(
-          labelText: 'Temperatura',
-          border: OutlineInputBorder(),
+  Widget buildParameterForm(MapEntry entry) => TextFormField(
+        initialValue: entry.value.toString(),
+        decoration: InputDecoration(
+          labelText: entry.key,
+          border: const OutlineInputBorder(),
         ),
-        keyboardType: TextInputType.number,
+        keyboardType:
+            const TextInputType.numberWithOptions(signed: true, decimal: true),
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
+          FilteringTextInputFormatter.allow(
+              RegExp(r'^[-]?[0-9]*[.]{0,1}[0-9]*[e]{0,1}[-+]{0,1}[0-9]*$'))
         ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
@@ -71,8 +81,11 @@ class _ModelsScreenState extends State<ModelsScreen> {
             _model = newValue!;
           });
         },
-        items: <String>['MODEL_P_MAX_EQU_1_21','MODEL_P_MAX_EQU_1_24','MODEL_P_MAX_EQU_2_24']
-            .map<DropdownMenuItem<String>>((String value) {
+        items: <String>[
+          'MODEL_P_MAX_2_EQU_1_21',
+          'MODEL_P_MAX_4_EQU_1_21',
+          'MODEL_FUZZY_NMF_EQU_2_24'
+        ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
