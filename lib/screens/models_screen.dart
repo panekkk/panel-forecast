@@ -15,7 +15,7 @@ class _ModelsScreenState extends State<ModelsScreen> {
   final formKey = GlobalKey<FormState>();
   static final regexParameter =
       RegExp(r'^[-]?[0-9]*[.]{0,1}[0-9]*([e][-+][0-9]*)?$');
-  String _model = 'MODEL_FUZZY_NMF_EQU_2_24';
+  String _model = 'MODEL_P_MAX_2_EQU_1_21';
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -46,6 +46,7 @@ class _ModelsScreenState extends State<ModelsScreen> {
       );
 
   Widget buildParameterForm(MapEntry entry) => TextFormField(
+        key: Key(_model),
         initialValue: entry.value.toString(),
         decoration: InputDecoration(
           labelText: entry.key,

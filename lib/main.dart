@@ -7,7 +7,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
-        create: (nmfModel) => ListModelParameters())
+        create: (_) => ListModelParameters())
     ],
     child: const MyApp(),
   ));
