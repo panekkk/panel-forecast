@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
-import 'package:panel_forecast/models/model_parameters/model_parameters.dart';
+import 'package:panel_forecast/providers/models_list_provider.dart';
 import 'package:provider/provider.dart';
 
 class ModelsScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _ModelsScreenState extends State<ModelsScreen> {
             child: Column(
               children: <Widget>[
                 for (MapEntry e in context
-                    .read<ListModelParameters>()
+                    .read<ListModelParametersProvider>()
                     .getModelParametersEntries(_model))
                   Column(
                     children: [
@@ -38,7 +38,8 @@ class _ModelsScreenState extends State<ModelsScreen> {
                       )
                     ],
                   ),
-                buildDropdownModelList()
+                buildDropdownModelList(),
+                buildSaveButton()
               ],
             ),
           ),
@@ -63,6 +64,13 @@ class _ModelsScreenState extends State<ModelsScreen> {
             return 'Wprowadź poprawną wartość';
           } else {
             return null;
+          }
+        },
+        onSaved: (newValue) {
+          for (MapEntry e in context
+              .read<ListModelParametersProvider>()
+              .getModelParametersEntries(_model)) {
+            if (entry.key == e.key) {}
           }
         },
       );
@@ -93,4 +101,30 @@ class _ModelsScreenState extends State<ModelsScreen> {
           );
         }).toList(),
       );
+  Widget buildSaveButton() => ElevatedButton(
+      onPressed: () {
+        _saveForm();
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('Sukces'),
+                  content: Text('Zapisano'),
+                  actions: [
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    )
+                  ],
+                ));
+      },
+      child: const Text('Zapisz'));
+  void _saveForm() {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+
+      print('xaxaax');
+    }
+  }
+
+  void _saveFormField() {}
 }
