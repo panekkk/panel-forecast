@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:panel_forecast/models/model_parameters.dart';
+import 'package:panel_forecast/models/parameters_model.dart';
 
-List<ModelParameters> _initialData = [
-  ModelParameters({
+List<ParametersModel> _initialData = [
+  ParametersModel({
     'n1': 0.000000001933,
     'n2': -0.00002867,
     'n3': 0.0206809486,
@@ -13,14 +13,14 @@ List<ModelParameters> _initialData = [
     'n8': 0.122805,
     'n9': -18.545
   }, "MODEL_FUZZY_NMF_EQU_2_24"),
-  ModelParameters({
+  ParametersModel({
     'a': -1.9855E-6,
     'b': -0.0007019475,
     'c': 0.1201476,
     'd': 0.30119871,
     'e': -17.061743
   }, "MODEL_P_MAX_2_EQU_1_21"),
-  ModelParameters({
+  ParametersModel({
     'c1': 3.81775e-10,
     'c2': -5.1508e-6,
     'c3': -8.8529e-8,
@@ -31,9 +31,9 @@ List<ModelParameters> _initialData = [
 ];
 
 class ListModelParametersProvider with ChangeNotifier {
-  final List<ModelParameters> _listModelParameters = _initialData;
+  final List<ParametersModel> _listModelParameters = _initialData;
 
-  List<ModelParameters> get listModelParameters => _listModelParameters;
+  List<ParametersModel> get listModelParameters => _listModelParameters;
 
   getModelParametersEntries(String name) {
     return _listModelParameters
@@ -43,7 +43,7 @@ class ListModelParametersProvider with ChangeNotifier {
   }
 
   setParameterValue(MapEntry entry, String name, double newValue) {
-    for (ModelParameters model in listModelParameters) {
+    for (ParametersModel model in listModelParameters) {
       if (name == model.name) {
         model.parameters.update(entry.key, (value) => newValue);
       }
