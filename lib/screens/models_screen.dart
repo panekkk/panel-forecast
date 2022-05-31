@@ -13,8 +13,6 @@ class ModelsScreen extends StatefulWidget {
 
 class _ModelsScreenState extends State<ModelsScreen> {
   final formKey = GlobalKey<FormState>();
-  static final regexParameter =
-      RegExp(r'^[-]?[0-9]*[.]{0,1}[0-9]*([e][-+][0-9]*)?$');
   String _model = 'MODEL_P_MAX_2_EQU_1_21';
 
   @override
@@ -55,10 +53,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
         ),
         keyboardType:
             const TextInputType.numberWithOptions(signed: true, decimal: true),
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(
-              RegExp(r'^[-]?[0-9]*[.]{0,1}[0-9]*[e]{0,1}[-+]{0,1}[0-9]*$'))
-        ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
@@ -67,10 +61,10 @@ class _ModelsScreenState extends State<ModelsScreen> {
           }
         },
         onSaved: (newValue) {
-          for (MapEntry e in context
-              .read<ListModelParametersProvider>()
-              .getModelParametersEntries(_model)) {
-            if (entry.key == e.key) {}
+          if (newValue != entry.value.toString()) {
+            context
+                .read<ListModelParametersProvider>()
+                .setParameterValue(entry, _model, double.parse(newValue!));
           }
         },
       );
@@ -104,27 +98,24 @@ class _ModelsScreenState extends State<ModelsScreen> {
   Widget buildSaveButton() => ElevatedButton(
       onPressed: () {
         _saveForm();
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: const Text('Sukces'),
-                  content: Text('Zapisano'),
-                  actions: [
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () => Navigator.pop(context),
-                    )
-                  ],
-                ));
       },
       child: const Text('Zapisz'));
   void _saveForm() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-
-      print('xaxaax');
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Sukces'),
+                content: const Text('Zapisano'),
+                actions: [
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+              ));
     }
   }
 
-  void _saveFormField() {}
 }

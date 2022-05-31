@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panel_forecast/models/model_parameters.dart';
 
-final List<ModelParameters> _initialData = [
+List<ModelParameters> _initialData = [
   ModelParameters({
     'n1': 0.000000001933,
     'n2': -0.00002867,
@@ -31,7 +31,7 @@ final List<ModelParameters> _initialData = [
 ];
 
 class ListModelParametersProvider with ChangeNotifier {
-  List<ModelParameters> _listModelParameters = _initialData;
+  final List<ModelParameters> _listModelParameters = _initialData;
 
   List<ModelParameters> get listModelParameters => _listModelParameters;
 
@@ -40,5 +40,13 @@ class ListModelParametersProvider with ChangeNotifier {
         .firstWhere((element) => element.name == name)
         .parameters
         .entries;
+  }
+
+  setParameterValue(MapEntry entry, String name, double newValue) {
+    for (ModelParameters model in listModelParameters) {
+      if (name == model.name) {
+        model.parameters.update(entry.key, (value) => newValue);
+      }
+    }
   }
 }
