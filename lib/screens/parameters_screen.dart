@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:panel_forecast/models/basic_parameters_model.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
+import 'package:panel_forecast/providers/basic_parameters_provider.dart';
+import 'package:provider/provider.dart';
 
 class ParametersScreen extends StatefulWidget {
   const ParametersScreen({Key? key}) : super(key: key);
@@ -11,62 +14,59 @@ class ParametersScreen extends StatefulWidget {
 
 class _ParametersScreenState extends State<ParametersScreen> {
   final formKey = GlobalKey<FormState>();
-  //TODO: Create proper data model
-  double _inverterEfficeincy = 0;
-  double _surface = 0;
-  double _slope = 0;
-  double _latitude = 0;
-  double _albedo = 0;
-  String _model = 'TIAN';
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Parametry')),
-        drawer: const NavigationDrawer(),
-        body: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                buildInverterEfficiencyField(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildSurfacePVField(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildSlopePVField(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildLatitudeField(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildAlbedoField(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildDropdownModelDiffusionList(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildSubmit(),
-              ],
-            ),
+  Widget build(BuildContext context) {
+    var _basicParameters =
+        context.read<BasicParametersProvider>().basicParameters;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Parametry')),
+      drawer: const NavigationDrawer(),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              buildInverterEfficiencyField(_basicParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildSurfacePVField(_basicParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildSlopePVField(_basicParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildLatitudeField(_basicParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildAlbedoField(_basicParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildDropdownModelDiffusionList(_basicParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildSubmit(),
+            ],
           ),
         ),
-      );
-      Widget buildInverterEfficiencyField() => TextFormField(
+      ),
+    );
+  }
+
+  Widget buildInverterEfficiencyField(BasicParameters basicParameters) =>
+      TextFormField(
+        initialValue: basicParameters.inverterEfficeincy.toString(),
         decoration: const InputDecoration(
           labelText: 'Sprawność falownika',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
-        ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
@@ -74,18 +74,16 @@ class _ParametersScreenState extends State<ParametersScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _inverterEfficeincy = double.parse(value.toString())),
+        onSaved: (value) => setState(() => basicParameters.inverterEfficeincy =
+            double.parse(value.toString())),
       );
-      Widget buildSurfacePVField() => TextFormField(
+  Widget buildSurfacePVField(BasicParameters basicParameters) => TextFormField(
+        initialValue: basicParameters.surface.toString(),
         decoration: const InputDecoration(
           labelText: 'Powierzchnia paneli [m^2]',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
-        ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
@@ -93,18 +91,16 @@ class _ParametersScreenState extends State<ParametersScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _surface = double.parse(value.toString())),
+        onSaved: (value) => setState(
+            () => basicParameters.surface = double.parse(value.toString())),
       );
-      Widget buildSlopePVField() => TextFormField(
+  Widget buildSlopePVField(BasicParameters basicParameters) => TextFormField(
+        initialValue: basicParameters.slope.toString(),
         decoration: const InputDecoration(
           labelText: 'Nachylenie paneli [rad]',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
-        ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
@@ -112,18 +108,16 @@ class _ParametersScreenState extends State<ParametersScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _slope = double.parse(value.toString())),
+        onSaved: (value) => setState(
+            () => basicParameters.slope = double.parse(value.toString())),
       );
-      Widget buildLatitudeField() => TextFormField(
+  Widget buildLatitudeField(BasicParameters basicParameters) => TextFormField(
+        initialValue: basicParameters.latitude.toString(),
         decoration: const InputDecoration(
           labelText: 'Szerokość geograficzna N [rad]',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
-        ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
@@ -131,18 +125,16 @@ class _ParametersScreenState extends State<ParametersScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _latitude = double.parse(value.toString())),
+        onSaved: (value) => setState(
+            () => basicParameters.latitude = double.parse(value.toString())),
       );
-      Widget buildAlbedoField() => TextFormField(
+  Widget buildAlbedoField(BasicParameters basicParameters) => TextFormField(
+        initialValue: basicParameters.albedo.toString(),
         decoration: const InputDecoration(
           labelText: 'Albedo',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
-        ],
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
@@ -150,11 +142,12 @@ class _ParametersScreenState extends State<ParametersScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _albedo = double.parse(value.toString())),
+        onSaved: (value) => setState(
+            () => basicParameters.albedo = double.parse(value.toString())),
       );
-      Widget buildDropdownModelDiffusionList() => DropdownButton<String>(
-        value: _model,
+  Widget buildDropdownModelDiffusionList(BasicParameters basicParameters) =>
+      DropdownButton<String>(
+        value: basicParameters.model,
         icon: const Icon(Icons.arrow_downward),
         isExpanded: true,
         elevation: 16,
@@ -166,7 +159,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
         ),
         onChanged: (String? newValue) {
           setState(() {
-            _model = newValue!;
+            basicParameters.model = newValue!;
           });
         },
         items: <String>['TIAN', 'SRAN', 'KRAN', 'Four']
@@ -177,7 +170,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
           );
         }).toList(),
       );
-      Widget buildSubmit() => ElevatedButton(
+  Widget buildSubmit() => ElevatedButton(
       onPressed: () {
         final isValid = formKey.currentState?.validate();
         if (isValid == true) {
@@ -186,8 +179,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
               context: context,
               builder: (context) => AlertDialog(
                     title: const Text('Sukces'),
-                    content:
-                        const Text('Zapisano model'),
+                    content: const Text('Zapisano model'),
                     actions: [
                       TextButton(
                         child: const Text('OK'),

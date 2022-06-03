@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
-import 'package:panel_forecast/providers/models_list_provider.dart';
+import 'package:panel_forecast/providers/parameters_models_list_provider.dart';
 import 'package:provider/provider.dart';
 
 class ModelsScreen extends StatefulWidget {
@@ -117,5 +117,4 @@ class _ModelsScreenState extends State<ModelsScreen> {
               ));
     }
   }
-
 }
