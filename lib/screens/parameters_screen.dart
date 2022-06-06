@@ -70,6 +70,9 @@ class _ParametersScreenState extends State<ParametersScreen> {
         validator: (value) {
           if (double.tryParse(value.toString()) == null) {
             return 'Wprowadź poprawną wartość';
+          }
+          if (double.tryParse(value.toString())! > 1.0) {
+            return 'Wprowadź poprawną wartość';
           } else {
             return null;
           }
