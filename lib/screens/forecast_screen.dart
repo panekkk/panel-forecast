@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
+import 'package:intl/intl.dart';
 
 class ForecastScreen extends StatefulWidget {
   const ForecastScreen({Key? key}) : super(key: key);
@@ -29,6 +30,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
                   height: 10,
                 ),
                 buildInsolation(),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildDateField(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -126,4 +131,18 @@ class _ForecastScreenState extends State<ForecastScreen> {
         }
       },
       child: const Text('Oblicz'));
+  Widget buildDateField() {
+    final now = DateTime.now();
+    var formatter = DateFormat('yyyy-MM-dd');
+    final TextEditingController _controller = TextEditingController()
+      ..text = formatter.format(now);
+    return TextField(
+      enabled: false,
+      controller: _controller,
+      decoration: const InputDecoration(
+        labelText: 'Data',
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
 }
