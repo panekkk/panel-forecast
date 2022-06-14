@@ -1,10 +1,10 @@
-class BasicParameters {
+class BasicParametersModel {
   double inverterEfficeincy;
   double surface;
-  double slope;
+  double tiltAngle;
   double latitude;
   double albedo;
   String model;
-  BasicParameters(this.inverterEfficeincy, this.surface, this.slope,
+  BasicParametersModel(this.inverterEfficeincy, this.surface, this.tiltAngle,
       this.latitude, this.albedo, this.model);
 }

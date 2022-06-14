@@ -35,7 +35,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
               const SizedBox(
                 height: 10,
               ),
-              buildSlopePVField(_basicParameters),
+              buildTiltAnglePVField(_basicParameters),
               const SizedBox(
                 height: 10,
               ),
@@ -59,7 +59,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
     );
   }
 
-  Widget buildInverterEfficiencyField(BasicParameters basicParameters) =>
+  Widget buildInverterEfficiencyField(BasicParametersModel basicParameters) =>
       TextFormField(
         initialValue: basicParameters.inverterEfficeincy.toString(),
         decoration: const InputDecoration(
@@ -80,7 +80,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
         onSaved: (value) => setState(() => basicParameters.inverterEfficeincy =
             double.parse(value.toString())),
       );
-  Widget buildSurfacePVField(BasicParameters basicParameters) => TextFormField(
+  Widget buildSurfacePVField(BasicParametersModel basicParameters) => TextFormField(
         initialValue: basicParameters.surface.toString(),
         decoration: const InputDecoration(
           labelText: 'Powierzchnia paneli [m^2]',
@@ -97,8 +97,8 @@ class _ParametersScreenState extends State<ParametersScreen> {
         onSaved: (value) => setState(
             () => basicParameters.surface = double.parse(value.toString())),
       );
-  Widget buildSlopePVField(BasicParameters basicParameters) => TextFormField(
-        initialValue: basicParameters.slope.toString(),
+  Widget buildTiltAnglePVField(BasicParametersModel basicParameters) => TextFormField(
+        initialValue: basicParameters.tiltAngle.toString(),
         decoration: const InputDecoration(
           labelText: 'Nachylenie paneli [rad]',
           border: OutlineInputBorder(),
@@ -112,9 +112,9 @@ class _ParametersScreenState extends State<ParametersScreen> {
           }
         },
         onSaved: (value) => setState(
-            () => basicParameters.slope = double.parse(value.toString())),
+            () => basicParameters.tiltAngle = double.parse(value.toString())),
       );
-  Widget buildLatitudeField(BasicParameters basicParameters) => TextFormField(
+  Widget buildLatitudeField(BasicParametersModel basicParameters) => TextFormField(
         initialValue: basicParameters.latitude.toString(),
         decoration: const InputDecoration(
           labelText: 'Szerokość geograficzna N [rad]',
@@ -131,7 +131,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
         onSaved: (value) => setState(
             () => basicParameters.latitude = double.parse(value.toString())),
       );
-  Widget buildAlbedoField(BasicParameters basicParameters) => TextFormField(
+  Widget buildAlbedoField(BasicParametersModel basicParameters) => TextFormField(
         initialValue: basicParameters.albedo.toString(),
         decoration: const InputDecoration(
           labelText: 'Albedo',
@@ -148,7 +148,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
         onSaved: (value) => setState(
             () => basicParameters.albedo = double.parse(value.toString())),
       );
-  Widget buildDropdownModelDiffusionList(BasicParameters basicParameters) =>
+  Widget buildDropdownModelDiffusionList(BasicParametersModel basicParameters) =>
       DropdownButton<String>(
         value: basicParameters.model,
         icon: const Icon(Icons.arrow_downward),
@@ -165,7 +165,7 @@ class _ParametersScreenState extends State<ParametersScreen> {
             basicParameters.model = newValue!;
           });
         },
-        items: <String>['TIAN', 'SRAN', 'KRAN', 'Four']
+        items: <String>['BADESCU','HAY','KORONAKIS','LIU_JORDAN','REINDL','STEVEN_UNSWORTH','TIAN']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,

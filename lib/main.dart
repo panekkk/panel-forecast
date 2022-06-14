@@ -3,12 +3,14 @@ import 'package:panel_forecast/screens/forecast_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:panel_forecast/providers/parameters_models_list_provider.dart';
 import 'package:panel_forecast/providers/basic_parameters_provider.dart';
+import 'package:panel_forecast/providers/weather_parameters_provider.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ListModelParametersProvider()),
-      ChangeNotifierProvider(create: (_) => BasicParametersProvider())
+      ChangeNotifierProvider(create: (_) => BasicParametersProvider()),
+      ChangeNotifierProvider(create: (_)=> WeatherParametersModelProvider())
     ],
     child: const MyApp(),
   ));

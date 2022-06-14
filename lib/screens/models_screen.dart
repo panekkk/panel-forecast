@@ -13,7 +13,7 @@ class ModelsScreen extends StatefulWidget {
 
 class _ModelsScreenState extends State<ModelsScreen> {
   final formKey = GlobalKey<FormState>();
-  String _model = 'MODEL_P_MAX_2_EQU_1_21';
+  String _model = 'MODEL_FUZZY_NMF_EQU_2_24';
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -84,6 +84,7 @@ class _ModelsScreenState extends State<ModelsScreen> {
             _model = newValue!;
           });
         },
+        //TODO on saved save model name
         items: <String>[
           'MODEL_P_MAX_2_EQU_1_21',
           'MODEL_P_MAX_4_EQU_1_21',

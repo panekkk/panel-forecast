@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:panel_forecast/models/basic_parameters_model.dart';
+import 'package:panel_forecast/models/weather_parameters_model.dart';
+import 'package:panel_forecast/providers/basic_parameters_provider.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
 import 'package:intl/intl.dart';
+import 'package:panel_forecast/providers/weather_parameters_provider.dart';
+import 'package:panel_forecast/providers/parameters_models_list_provider.dart';
+import 'package:panel_forecast/services/panel_forecast_service.dart';
+import 'package:panel_forecast/models/parameters_model.dart';
+import 'package:provider/provider.dart';
 
 class ForecastScreen extends StatefulWidget {
   const ForecastScreen({Key? key}) : super(key: key);
@@ -12,47 +20,53 @@ class ForecastScreen extends StatefulWidget {
 
 class _ForecastScreenState extends State<ForecastScreen> {
   final formKey = GlobalKey<FormState>();
-  double _temperature = 0;
-  double _insolation = 0;
-  String _model = 'Two';
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Prognoza')),
-        drawer: const NavigationDrawer(),
-        body: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                buildTemperature(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildInsolation(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildDateField(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildDropdownModelList(),
-                const SizedBox(
-                  height: 10,
-                ),
-                buildSubmit(),
-              ],
-            ),
+  Widget build(BuildContext context) {
+    var _weatherParameters =
+        context.read<WeatherParametersModelProvider>().weatherParameters;
+    var _basicParameters = context.read<BasicParametersProvider>().basicParameters;
+    var _listModelParameters = context.read<ListModelParametersProvider>().listModelParameters;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Prognoza')),
+      drawer: const NavigationDrawer(),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              buildTemperature(_weatherParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildIrradiation(_weatherParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildDateField(),
+              const SizedBox(
+                height: 10,
+              ),
+              buildDropdownModelList(_weatherParameters),
+              const SizedBox(
+                height: 10,
+              ),
+              buildSubmit(_basicParameters,_listModelParameters, _weatherParameters),
+            ],
           ),
         ),
-      );
-  Widget buildTemperature() => TextFormField(
+      ),
+    );
+  }
+
+  Widget buildTemperature(WeatherParametersModel weatherParameters) =>
+      TextFormField(
         decoration: const InputDecoration(
           labelText: 'Temperatura',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
+        initialValue: weatherParameters.temperature.toString(),
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
         ],
@@ -63,15 +77,17 @@ class _ForecastScreenState extends State<ForecastScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _temperature = double.parse(value.toString())),
+        onSaved: (value) => setState(() =>
+            weatherParameters.temperature = double.parse(value.toString())),
       );
-  Widget buildInsolation() => TextFormField(
+  Widget buildIrradiation(WeatherParametersModel weatherParameters) =>
+      TextFormField(
         decoration: const InputDecoration(
           labelText: 'Nasłonecznienie',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
+        initialValue: weatherParameters.irradiation.toString(),
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'))
         ],
@@ -82,11 +98,12 @@ class _ForecastScreenState extends State<ForecastScreen> {
             return null;
           }
         },
-        onSaved: (value) =>
-            setState(() => _insolation = double.parse(value.toString())),
+        onSaved: (value) => setState(() =>
+            weatherParameters.irradiation = double.parse(value.toString())),
       );
-  Widget buildDropdownModelList() => DropdownButton<String>(
-        value: _model,
+  Widget buildDropdownModelList(WeatherParametersModel weatherParameters) =>
+      DropdownButton<String>(
+        value: weatherParameters.model,
         icon: const Icon(Icons.arrow_downward),
         isExpanded: true,
         elevation: 16,
@@ -98,10 +115,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
         ),
         onChanged: (String? newValue) {
           setState(() {
-            _model = newValue!;
+            weatherParameters.model = newValue!;
           });
         },
-        items: <String>['One', 'Two', 'Free', 'Four']
+        items: <String>['MODEL_FUZZY_NMF_EQU_2_24','MODEL_P_MAX_2_EQU_1_21','MODEL_P_MAX_4_EQU_1_21']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -110,7 +127,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
         }).toList(),
       );
 
-  Widget buildSubmit() => ElevatedButton(
+  Widget buildSubmit(BasicParametersModel basicParameters,List<ParametersModel> listParametersModel,  WeatherParametersModel weatherParametersModel) => ElevatedButton(
       onPressed: () {
         final isValid = formKey.currentState?.validate();
         if (isValid == true) {
@@ -119,8 +136,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
               context: context,
               builder: (context) => AlertDialog(
                     title: const Text('Sukces'),
-                    content:
-                        Text('Obliczona moc: ' '${_temperature + _insolation}'),
+                    content:  Text(PanelForecastService.forecastPowerProduction(basicParameters, listParametersModel, weatherParametersModel).toString()),
                     actions: [
                       TextButton(
                         child: const Text('OK'),
