@@ -26,8 +26,6 @@ class PanelForecastService {
       }
       break;
     }
-    print(basicParameters.model);
-    print(powerCalculatedByModel);
     power = powerCalculatedByModel * basicParameters.surface * basicParameters.inverterEfficeincy;
     return power;
   }
@@ -38,7 +36,7 @@ class PanelForecastService {
     double b = parametersModel.parameters['b'];
     double c = parametersModel.parameters['c'];
     double d = parametersModel.parameters['d'];
-    double e = parametersModel.parameters['a'];
+    double e = parametersModel.parameters['e'];
     double irradiationInPanelSurface = _calculateIrradiationInPanelSurface(basicParameters, weatherParametersModel);
 
     result = e;
@@ -47,8 +45,6 @@ class PanelForecastService {
     result += c * math.pow(weatherParametersModel.temperature, 0.0) * math.pow(irradiationInPanelSurface, 1.0);
     result += d * math.pow(weatherParametersModel.temperature, 1.0) * math.pow(irradiationInPanelSurface, 0.0);
 
-    print(result);
-    print(irradiationInPanelSurface);
     return result;
   }
   static double _forecastPowerProductionModelPmax4(BasicParametersModel basicParameters, List<ParametersModel> listParametersModel, WeatherParametersModel weatherParametersModel){

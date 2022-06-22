@@ -62,7 +62,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
   Widget buildTemperature(WeatherParametersModel weatherParameters) =>
       TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Temperatura',
+          labelText: 'Temperatura [K]',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
@@ -83,7 +83,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
   Widget buildIrradiation(WeatherParametersModel weatherParameters) =>
       TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Nasłonecznienie',
+          labelText: 'Nasłonecznienie [Ws/m^2]',
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.number,
@@ -135,8 +135,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: const Text('Sukces'),
-                    content:  Text(PanelForecastService.forecastPowerProduction(basicParameters, listParametersModel, weatherParametersModel).toString()),
+                    title: const Text('Prognoza mocy'),
+                    content:  Text('Prognozowana energia wynosi: ' + PanelForecastService.forecastPowerProduction(basicParameters, listParametersModel, weatherParametersModel).toString()+ ' Wh'),
                     actions: [
                       TextButton(
                         child: const Text('OK'),

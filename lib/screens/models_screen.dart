@@ -84,7 +84,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
             _model = newValue!;
           });
         },
-        //TODO on saved save model name
         items: <String>[
           'MODEL_P_MAX_2_EQU_1_21',
           'MODEL_P_MAX_4_EQU_1_21',
