@@ -77,8 +77,11 @@ class _ParametersScreenState extends State<ParametersScreen> {
             return null;
           }
         },
-        onSaved: (value) => setState(() => basicParameters.inverterEfficeincy =
-            double.parse(value.toString())),
+        onSaved: (newValue) {
+          if (newValue != basicParameters.inverterEfficeincy.toString()) {
+            basicParameters.inverterEfficeincy = double.parse(newValue.toString());
+          }
+        }
       );
   Widget buildSurfacePVField(BasicParametersModel basicParameters) => TextFormField(
         initialValue: basicParameters.surface.toString(),

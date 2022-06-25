@@ -24,8 +24,10 @@ class _ForecastScreenState extends State<ForecastScreen> {
   Widget build(BuildContext context) {
     var _weatherParameters =
         context.read<WeatherParametersModelProvider>().weatherParameters;
-    var _basicParameters = context.read<BasicParametersProvider>().basicParameters;
-    var _listModelParameters = context.read<ListModelParametersProvider>().listModelParameters;
+    var _basicParameters =
+        context.read<BasicParametersProvider>().basicParameters;
+    var _listModelParameters =
+        context.read<ListModelParametersProvider>().listModelParameters;
     return Scaffold(
       appBar: AppBar(title: const Text('Prognoza')),
       drawer: const NavigationDrawer(),
@@ -51,7 +53,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
               const SizedBox(
                 height: 10,
               ),
-              buildSubmit(_basicParameters,_listModelParameters, _weatherParameters),
+              buildSubmit(
+                  _basicParameters, _listModelParameters, _weatherParameters),
             ],
           ),
         ),
@@ -118,8 +121,11 @@ class _ForecastScreenState extends State<ForecastScreen> {
             weatherParameters.model = newValue!;
           });
         },
-        items: <String>['MODEL_FUZZY_NMF_EQU_2_24','MODEL_P_MAX_2_EQU_1_21','MODEL_P_MAX_4_EQU_1_21']
-            .map<DropdownMenuItem<String>>((String value) {
+        items: <String>[
+          'MODEL_FUZZY_NMF_EQU_2_24',
+          'MODEL_P_MAX_2_EQU_1_21',
+          'MODEL_P_MAX_4_EQU_1_21'
+        ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -127,26 +133,36 @@ class _ForecastScreenState extends State<ForecastScreen> {
         }).toList(),
       );
 
-  Widget buildSubmit(BasicParametersModel basicParameters,List<ParametersModel> listParametersModel,  WeatherParametersModel weatherParametersModel) => ElevatedButton(
-      onPressed: () {
-        final isValid = formKey.currentState?.validate();
-        if (isValid == true) {
-          formKey.currentState?.save(); //if valid save state of inputs
-          showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: const Text('Prognoza mocy'),
-                    content:  Text('Prognozowana energia wynosi: ' + PanelForecastService.forecastPowerProduction(basicParameters, listParametersModel, weatherParametersModel).toString()+ ' Wh'),
-                    actions: [
-                      TextButton(
-                        child: const Text('OK'),
-                        onPressed: () => Navigator.pop(context),
-                      )
-                    ],
-                  ));
-        }
-      },
-      child: const Text('Oblicz'));
+  Widget buildSubmit(
+          BasicParametersModel basicParameters,
+          List<ParametersModel> listParametersModel,
+          WeatherParametersModel weatherParametersModel) =>
+      ElevatedButton(
+          onPressed: () {
+            final isValid = formKey.currentState?.validate();
+            if (isValid == true) {
+              formKey.currentState?.save(); //if valid save state of inputs
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: const Text('Prognoza'),
+                        content: Text('Prognozowana energia wynosi: ' +
+                            PanelForecastService.forecastPowerProduction(
+                                    basicParameters,
+                                    listParametersModel,
+                                    weatherParametersModel)
+                                .toString() +
+                            ' Wh'),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(context),
+                          )
+                        ],
+                      ));
+            }
+          },
+          child: const Text('Oblicz'));
   Widget buildDateField() {
     final now = DateTime.now();
     var formatter = DateFormat('yyyy-MM-dd');

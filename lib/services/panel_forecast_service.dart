@@ -188,8 +188,6 @@ class PanelForecastService {
             rd = (3.0 + math.cos(2.0 * s))/4.0;
             break;
         case 'HAY':
-            // WARNING int the row "Hay" of the table 1 there must be en error. 
-            // In the first part of the formula must be Bd/God * Rb
             rd = bd / (gOd * 1000000.0) * rb + (1 - bd / (gOd * 1000000.0))*rdLJ;
             break;
         case 'KORONAKIS':
