@@ -56,6 +56,7 @@ class PanelForecastService {
     double c4 = parametersModel.parameters['c4'];
     double c5 = parametersModel.parameters['c5'];
     double c6 = parametersModel.parameters['c6'];
+    
     double irradiationInPanelSurface = _calculateIrradiationInPanelSurface(basicParameters, weatherParametersModel);
 
     result = c6;
@@ -78,6 +79,7 @@ class PanelForecastService {
     double n7 = parametersModel.parameters['n7'];
     double n8 = parametersModel.parameters['n8'];
     double n9 = parametersModel.parameters['n9'];
+    
     double irradiationInPanelSurface = _calculateIrradiationInPanelSurface(basicParameters, weatherParametersModel);
 
     result = n9;
