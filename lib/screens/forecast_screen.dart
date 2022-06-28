@@ -4,7 +4,6 @@ import 'package:panel_forecast/models/basic_parameters_model.dart';
 import 'package:panel_forecast/models/weather_parameters_model.dart';
 import 'package:panel_forecast/providers/basic_parameters_provider.dart';
 import 'package:panel_forecast/widgets/navigation_drawer.dart';
-import 'package:intl/intl.dart';
 import 'package:panel_forecast/providers/weather_parameters_provider.dart';
 import 'package:panel_forecast/providers/parameters_models_list_provider.dart';
 import 'package:panel_forecast/services/panel_forecast_service.dart';
@@ -45,7 +44,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
               const SizedBox(
                 height: 10,
               ),
-              buildDateField(),
+              buildDateField(_weatherParameters),
               const SizedBox(
                 height: 10,
               ),
@@ -163,18 +162,21 @@ class _ForecastScreenState extends State<ForecastScreen> {
             }
           },
           child: const Text('Oblicz'));
-  Widget buildDateField() {
-    final now = DateTime.now();
-    var formatter = DateFormat('yyyy-MM-dd');
-    final TextEditingController _controller = TextEditingController()
-      ..text = formatter.format(now);
-    return TextField(
-      enabled: false,
-      controller: _controller,
-      decoration: const InputDecoration(
-        labelText: 'Data',
-        border: OutlineInputBorder(),
-      ),
+  Widget buildDateField(WeatherParametersModel weatherParameters) => TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Data [yyyy-mm-dd]',
+          border: OutlineInputBorder(),
+        ),
+        keyboardType: TextInputType.number,
+        initialValue: weatherParameters.dateTime,
+        validator: (value) {
+          try {
+          DateTime.parse(value.toString());
+          } catch (e) {
+            return 'Wprowadź poprawną wartość';
+          }
+        },
+        onSaved: (value) => setState(() =>
+            weatherParameters.dateTime = value.toString()),
     );
-  }
 }

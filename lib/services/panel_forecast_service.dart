@@ -94,9 +94,9 @@ class PanelForecastService {
 
     return result;
    }
-   static DayOfYearDependendValues _calculateValues(){
+   static DayOfYearDependendValues _calculateValues(WeatherParametersModel weatherParametersModel){
     double twoGamma;
-    int dayOfYear = Jiffy().dayOfYear;
+    int dayOfYear = Jiffy(weatherParametersModel.dateTime).dayOfYear;
     DayOfYearDependendValues result = DayOfYearDependendValues();
 
     result.gamma = radians(360.0 / 365.0 * (dayOfYear.toDouble() - 1.0));
@@ -117,7 +117,7 @@ class PanelForecastService {
     double result = 0;
 
 
-    DayOfYearDependendValues calculatedValues = _calculateValues();
+    DayOfYearDependendValues calculatedValues = _calculateValues(weatherParametersModel);
     double phi, s, sigma, a1, omegaS, gOd, gTd;
     double a, b, ab, aPow2Plus1, alphaT, a2, a3, a4, omegaST, omegaRT;
     double rb1, rb2, rb3, rb4, rb4second, rb5, rb, k;
